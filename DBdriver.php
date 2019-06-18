@@ -116,7 +116,7 @@ class DBdriver{
         return $this->Action("DELETE", $table, $where);
     }
 	
-    // allows to perform specific operation using query method
+    // allows to perform specific operation using GeneralQuery method
     public function Action($action, $table, $where = array()){
         if(count($where) === 3){
             $operators = array('=','>','<','>=','<=');
