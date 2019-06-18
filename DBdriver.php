@@ -14,18 +14,18 @@ class DBdriver{
             $_databaseConnection = false,
             $_errorMessage       = "The data base is not available"; 
 
-    public  $_lastQuery      = null,
-            $_affectedRows   = 0,
-            $_insertKeys     = array(),
-            $_insertValues   = array(),
-            $_updateSets     = array(),
-            $_lastInsertedId = null,
-            $_flagError      = false; 
+    public  $_lastQuery          = null,
+            $_affectedRows       = 0,
+            $_insertKeys         = array(),
+            $_insertValues       = array(),
+            $_updateSets         = array(),
+            $_lastInsertedId     = null,
+            $_flagError          = false; 
 
     private function __construct(){
         try{
             $this->_databaseConnection = new PDO('mysql:host='.$this->_host.';dbname='.$this->_databaseName,
-												  $this->_username,$this->_password);
+						  $this->_username,$this->_password);
         }catch(PDOException $e){
             log_exception($e->getMessage());
             die($this->_errorMessage);
@@ -62,7 +62,7 @@ class DBdriver{
                 $this->_count   = $this->_query->rowCount();
                 $this->Close();
             }else{
-				$this->_flagError = true;
+	        $this->_flagError = true;
                 log_exception($this->_query->errorInfo());
                 die($this->_errorMessage);
             }
@@ -83,7 +83,7 @@ class DBdriver{
             }
             $sql = "INSERT INTO {$table}(`".implode('`, `', $this->_insertKeys)."`) VALUES({$values})";
             if(!$this->GeneralQuery($sql, $this->_insertValues)->_flagError){
-                //last inser id
+                //get a last inser id
                 $this->_lastInsertedId = $this->_databaseConnection->lastInsertId();
                 $this->_insertKeys   = array();
                 $this->_insertValues = array();
@@ -112,7 +112,7 @@ class DBdriver{
         }
     }
 
-	public function Delete_($table, $where){
+    public function Delete_($table, $where){
         return $this->Action("DELETE", $table, $where);
     }
 	
@@ -133,7 +133,7 @@ class DBdriver{
         return false;
     }
 	
-	public function PrepareInsert($array = null){
+   public function PrepareInsert($array = null){
         if(!empty($array)){
             foreach($array as $key => $value){
                 $this->_insertKeys[] = $key;
@@ -142,11 +142,11 @@ class DBdriver{
         }
     } 
 
-	private function IntegerFilter($var){
-		$var = preg_replace('/[^0-9]/','',$var);
-			$var = $var != ''?$var:null;
-		return $var;
-	}
+    private function IntegerFilter($var){
+	    $var = preg_replace('/[^0-9]/','',$var);
+	    $var = $var != ''?$var:null;
+	    return $var;
+    }
 	
     public function GetResults(){
         if($this->count_() != 0)
@@ -163,7 +163,7 @@ class DBdriver{
         }
     }
 
-    public function GetCount_(){
+    public function GetCount(){
         return $this->_count;
     }
 
